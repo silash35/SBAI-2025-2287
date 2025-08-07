@@ -1,0 +1,26 @@
+{
+  "python.analysis.typeCheckingMode": "off",
+  "material-icon-theme.folders.associations": {
+    "views": "ui",
+  },
+  "material-icon-theme.files.associations": {
+    "qmldir" :"settings",
+  },
+  "cSpell.words": [
+    "antialiasing",
+    "astype",
+    "axvline",
+    "casadi",
+    "figsize",
+    "fontsize",
+    "gridspec",
+    "pinn",
+    "pirnn",
+    "tanksim",
+    "toarray",
+    "vertcat",
+    "xlabel",
+    "ylabel",
+    "pyproject"
+  ]
+}
