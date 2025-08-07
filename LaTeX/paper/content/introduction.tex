@@ -1,0 +1,31 @@
+\section{Introdução}
+
+Um elemento crítico para o funcionamento de um sistema de controle com realimentação é a qualidade das medições realizadas.
+Sensores precisos e confiáveis são essenciais para fornecer dados em tempo real ao controlador, permitindo ajustes corretos no processo.
+Caso um sensor apresente falhas, como leituras imprecisas ou atrasos, o controle pode ser prejudicado, levando o sistema a operar inadequadamente.
+Em situações extremas, se os sensores deixarem de fornecer dados ao controlador, o sistema pode entrar em malha aberta, o que pode resultar em instabilidade, baixa eficiência e até riscos operacionais.
+
+O uso de analisadores virtuais tem se tornado uma solução viável para esse problema.
+Também conhecidos como sensores de software (\textit{soft sensors}) e sensores virtuais, eles são ferramentas capazes de estimar valores de variáveis não medidas diretamente, utilizando dados de sensores físicos e relações matemáticas entre variáveis conhecidas \citep{martin_2021}.
+Alguns autores ainda incluem observadores de estado nesse conjunto de ferramentas \citep{kadlec_2009, santos_2022}, embora essa associação não seja consensual.
+Apesar das variações conceituais, o objetivo comum dessas abordagens é fornecer estimativas confiáveis de variáveis mesmo quando determinadas medições diretas não são possíveis devido a limitações técnicas ou falhas de sensores, garantindo a continuidade e a precisão do controle de processos \citep{adilton_2023}.
+
+Entretanto, dependendo do modelo utilizado, a execução de um analisador virtual pode demandar recursos computacionais significativos.
+Isso pode ser um problema para sistemas embarcados de baixo custo, como o Arduino UNO, onde soluções eficientes são essenciais devido às limitações de memória e poder de processamento.
+
+Uma abordagem alternativa de implementar um analisador virtual é o uso de redes neurais artificiais (\textit{Artificial Neural Networks} — ANNs).
+Essas são consideradas aproximadores universais de funções \citep{augustine_2024} e têm o potencial de serem mais rápidas que os métodos numéricos convencionais por terem uma arquitetura baseada em operações simples e paralelizáveis.
+Em adendo, as Redes Neurais Fenomenologicamente Informadas (\textit{Physics-Informed Neural Networks} — PINNs) foram introduzidas por \citeauthor{raissi_2017_I} em \citeyear{raissi_2017_I}.
+Elas são uma metodologia de treinamento que integra o modelo fenomenológico do problema diretamente na função custo penalizando previsões que violam as relações físicas conhecidas.
+Isso é especialmente vantajoso para simular sistemas complexos e com poucos dados experimentais, por combinar a flexibilidade das ANNs com o rigor das leis de conservação do sistema em análise \citep{raissi_2019}.
+
+Em \citeyear{nicodemus_2022}, \citeauthor{nicodemus_2022} integraram uma PINN a um esquema de controle de um braço robótico com múltiplas articulações.
+No ano seguinte, \citeauthor{zheng_2023} introduziram as Redes Neurais Recorrentes Fenomenologicamente Informadas (\textit{Physics-Informed Recurrent Neural Networks} — PIRNNs).
+Uma abordagem que aprimora a capacidade das PINNs de capturar dependências temporais, sendo particularmente úteis para modelagem de sistemas dinâmicos.
+Como exemplo de processo químico, eles utilizaram a PIRNN para o controle de um reator perfeitamente agitado (\text{Continuous Stirred-Tank Reactor} — CSTR) \citep{zheng_2023}.
+No entanto, essa implementação foi realizada em um ambiente computacional convencional, sem as restrições de hardware impostas por sistemas embarcados.
+
+Seguindo as ideias apresentadas por \citet{zheng_2023}, este trabalho explora o uso de PIRNNs para o controle de sistemas dinâmicos, com foco na implementação em sistemas embarcados de baixo custo.
+Para demonstrar a aplicabilidade e o desempenho das PIRNNs, um sistema de dois tanques esféricos em cascata é utilizado como exemplo.
+Especificamente, visa-se utilizar uma PIRNN para manter o controle PI desse sistema e avaliar a redução no tempo de cômputo e a qualidade das previsões em comparação com os métodos numéricos tradicionais.
+Além disso, este trabalho apresenta uma abordagem para o embarque de analisadores virtuais baseados em PIRNNs em microcontroladores de baixo custo, permitindo a manutenção do controle mesmo em falhas de sensores.

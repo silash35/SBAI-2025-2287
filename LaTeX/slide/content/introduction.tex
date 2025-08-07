@@ -3,57 +3,109 @@
 \begin{frame}
   \begin{block}{Objetivos}
     \begin{itemize}
-      \item Explorar o uso de Redes Neurais Baseadas em Física (PINNs) como uma alternativa aos métodos tradicionais de simulação de sistemas dinâmicos;
-      \item embarcar uma PINN em um microcontrolador de baixo custo.
+      \item Explorar o uso de Redes Neurais Recorrentes Fenomenologicamente Informadas (PIRNNs) para implementação de um analisador virtual.
+      \item Utilizar esse analisador virtual para manter o controle PI embarcado de um sistema dinâmico.
+      \item Embarcar a PIRNN proposta em um microcontrolador de baixo custo, testando o comportamento em um esquema \textit{hardware-in-the-loop} (HIL).
     \end{itemize}
   \end{block}
 
   \begin{block}{Relevância}
     \begin{itemize}
-      \item Velocidade é essencial em aplicações que exigem alta velocidade e respostas em tempo real, como no Controle Preditivo Baseado em Modelo (MPC).
+      \item Velocidade é essencial em aplicações que exigem alta velocidade e respostas em tempo real.
       \item Hardware de baixo custo torna a tecnologia viável para mais aplicações, inclusive em contextos industriais e acadêmicos.
     \end{itemize}
   \end{block}
 \end{frame}
 
+\begin{frame}{Visão Geral: ANNs, RNNs, PINNs e PIRNNs}
+  \begin{itemize}
+    \item \textbf{Redes Neurais Artificiais (ANNs)} são modelos computacionais inspirados no cérebro humano, capazes de aprender padrões a partir de dados. \vspace{0.5em}
+
+    \item \textbf{Redes Neurais Fenomenologicamente Informadas (PINNs)} incorporam conhecimento físico ao treinamento da rede neural. \vspace{0.5em}
+
+    \item \textbf{Redes Neurais Recorrentes (RNNs)} estendem as ANNs com “memória”, sendo ideais para sequências temporais. \vspace{0.5em}
+
+    \item \textbf{Redes Neurais Recorrentes Fenomenologicamente Informadas (PIRNNs)} combinam as vantagens das RNNs e das PINNs, sendo mais adequadas para sistemas dinâmicos.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{columns}
+    \column{0.35\textwidth}
+    Introduzidas por \citeauthor{raissi_2017_I} em \citedate{raissi_2017_I}, as \textbf{PINNs} são uma metodologia que integra o modelo fenomenológico do problema ao treinamento das \textbf{ANNs}. Elas têm o potencial de:
+
+    \vspace{0.2cm}
+
+    \begin{itemize}
+      \item Acelerar simulações em relação aos métodos numéricos tradicionais.
+      \item Melhorar a qualidade das previsões em comparação com ANNs convencionais.
+    \end{itemize}
+
+    \column{0.65\textwidth}
+    \begin{figure}
+      \centering
+      {\tikzset{every node/.append style={font=\large}}
+      \resizebox{\textwidth}{!}{\input{../common/figures/generic-pinn.tex}}}
+      \caption{Representação esquemática de uma PINN.}
+    \end{figure}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  As \textbf{RNNs} são redes que processam dados sequenciais (como séries temporais ou texto), mantendo o chamado \textit{hidden state} ($\nu_t$) que carrega informações do passado.
+
+  \vspace{0.4cm}
+
+  \begin{figure}
+    \centering
+    \resizebox{0.8\textwidth}{!}{\input{../common/figures/rnn.tex}}
+    \caption{Representação de uma rede neural recorrente (RNN) nas formas \textit{folded} e \textit{unfolded}. Adaptado de Stack Exchange (2019)}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  Esse \textit{hidden state} é usado para alimentar o mesmo neurônio com as informações dos passos anteriores. Repetindo o processo até obter o estado oculto final \parencite{pytorch_2024}.
+
+  \vspace{0.4cm}
+
+  \begin{center}
+    \begin{minipage}{0.65\textwidth}
+      \begin{block}{}
+        \centering
+        \Large
+        $\nu_t = \sigma(x_t \cdot W_{i\nu}^T + b_{i\nu} + \nu_{t-1} \cdot W_{\nu\nu}^T + b_{\nu\nu})$
+      \end{block}
+    \end{minipage}
+  \end{center}
+
+  \vspace{0.4cm}
+
+  Já as \textbf{PIRNNs} são uma variação das PINNs que incorpora memória recorrente e permite uma modelagem mais precisa de sistemas dinâmicos \parencite{zheng_2023}.
+\end{frame}
+
 \begin{frame}{Problema Exemplo}
   \begin{columns}
-    \begin{column}{0.4\textwidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=\textwidth]{tank-system.png}
-        \caption{Representação esquemática do sistema de dois tanques esféricos.}
-        \label{fig:tank-system}
-      \end{figure}
-    \end{column}
-    \begin{column}{0.6\textwidth}
-      \begin{block}{Sistema de equações diferenciais dos tanques \parencite{wildson_2024}}
-        \input{../common/content/tank-equations.tex}
-        \vspace{0cm}
-      \end{block}
-    \end{column}
+    \column{0.5\textwidth}
+    \begin{figure}
+      \centering
+      \only<1>{\includegraphics[width=\textwidth]{process-diagram/simple.png}}
+      \only<2>{\includegraphics[width=\textwidth]{process-diagram/full.png}}
+      \only<3>{\includegraphics[width=\textwidth]{process-diagram/feedback-1.png}}
+      \only<4>{\includegraphics[width=\textwidth]{process-diagram/feedback-2.png}}
+      \only<5>{\includegraphics[width=\textwidth]{process-diagram/feedback-3.png}}
+      \caption{Representação esquemática do sistema.}
+      \label{fig:tank-system}
+    \end{figure}
+
+    \column{0.5\textwidth}
+    \begin{block}{Sistema de equações diferenciais dos tanques}
+      \input{../common/content/tank-equations.tex}
+      \vspace{0cm}
+    \end{block}
+
   \end{columns}
 \end{frame}
 
 \begin{frame}
   \input{../common/content/tank-params.tex}
-\end{frame}
-
-\begin{frame}{Mas, o que são PINNs?}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      Introduzidas por \citeauthor{raissi_2017_I} em \citedate{raissi_2017_I}, as PINNs são uma forma de integrar princípios físicos ao treinamento de redes neurais. Elas têm o potencial de:
-      \begin{itemize}
-        \item Acelerar simulações em relação aos métodos numéricos tradicionais;
-        \item melhorar a qualidade das previsões em comparação com redes neurais convencionais.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{figure}
-        \centering
-        \resizebox{\textwidth}{!}{\input{../common/figures/neural-network.tex}}
-        \caption{Representação de uma Rede Neural Artificial (ANN).}
-      \end{figure}
-    \end{column}
-  \end{columns}
 \end{frame}

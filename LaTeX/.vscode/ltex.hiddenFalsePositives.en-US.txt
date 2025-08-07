@@ -1,2 +1,0 @@
-{"rule":"APPLICATION","sentence":"^\\QThese findings suggest that PIRNNs can be an efficient solution for systems requiring real-time control and process analysis applications.\\E$"}
-{"rule":"UNIT_SPACE","sentence":"^\\Q1mm\\E$"}

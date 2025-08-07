@@ -10,14 +10,7 @@
     "booktitle": false
   },
   "material-icon-theme.folders.associations": {
-    "tanks-slide": "television",
-    "psa-slide": "television",
-    "tanks-article": "docs",
-    "psa-article": "docs",
-    "bibliography": "pdf"
+    "slide": "television",
+    "paper": "docs",
   },
-  "files.exclude": {
-    "psa-*": true,
-    "**/*.log": true
-  }
 }

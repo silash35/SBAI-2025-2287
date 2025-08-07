@@ -13,38 +13,50 @@
       \end{tabular}
       \caption{Memória disponível no Arduíno UNO.}
     \end{table}
+
     \column{0.4\textwidth}
     \begin{figure}
       \centering
-      \includegraphics[width=\textwidth]{arduino.png}
+      \includegraphics[width=0.85\textwidth]{arduino.png}
       \caption{Placa Arduino UNO. Fonte: makerhero.com}
     \end{figure}
+
   \end{columns}
+\end{frame}
+
+\begin{frame}{Ciclo de Comunicação e Execução dos Componentes do Sistema}
+  \begin{figure}
+    \centering
+    \only<1>{\resizebox{0.85\textwidth}{!}{\input{../common/figures/hil-diagram/normal.tex}}}
+    \only<2>{\resizebox{0.85\textwidth}{!}{\input{../common/figures/hil-diagram/loop.tex}}}
+    \caption{Fluxograma da comunicação entre os componentes do sistema.}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{O \textit{TankSim}}
   \begin{columns}
-    \column{0.6\textwidth}
+    \column{0.5\textwidth}
     \begin{figure}
       \centering
       \includegraphics[width=\textwidth]{tanksim.png}
       \caption{Captura de tela do \textit{TankSim}.}
     \end{figure}
 
-    \column{0.4\textwidth}
+    \column{0.5\textwidth}
     O software \textit{TankSim} foi desenvolvido para:
     \begin{itemize}
       \item simular e manipular o funcionamento de uma planta;
       \item realizar a comunicação com o Arduino;
       \item visualizar os valores previstos pela rede neural;
     \end{itemize}
+
   \end{columns}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Resultados}
   \begin{figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{sil-pirnn.png}
-    \caption{Vazão de entrada $q_{\text{in}}$ e nível dos tanques $h_1$ e $h_2$, previstos pelo simulador e pela PIRNN embarcada no Arduino.}
+    \includegraphics[width=0.75\textwidth]{hil-pirnn-pi.png}
+    \caption{Vazão de entrada $q_{\mathrm{in}}$ definida pelo controlador PI e nível dos tanques $h_1$ e $h_2$ previstos pelo simulador e pela PIRNN.}
   \end{figure}
 \end{frame}

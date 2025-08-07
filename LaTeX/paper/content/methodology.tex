@@ -1,0 +1,117 @@
+\section{Metodologia}
+
+\subsection{Descrição do Sistema}
+
+O sistema analisado neste trabalho é composto por dois tanques esféricos interligados sujeitos à pressão atmosférica. A configuração do sistema é ilustrada na Figura \ref{fig:tank-system}, onde $h_1$ e $h_2$ representam os níveis dos tanques em centímetros, $q_{\mathrm{in}}$ a vazão volumétrica de entrada no primeiro tanque (em cm$^2$ $\cdot$ s$^{-1}$) e $SP$ o \textit{setpoint} para o nível do tanque 2. Os símbolos LT e LIC referem-se a instrumentação do sistema, sendo respectivamente, o transmissor de nível e o controlador de nível.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{process-diagram/full.png}
+  \caption{Representação esquemática do sistema de dois tanques esféricos.}
+  \label{fig:tank-system}
+\end{figure}
+
+A modelagem matemática dos tanques baseia-se no princípio de conservação de massa, do qual se obtêm \eqref{eq:tank_system_a} e \eqref{eq:tank_system_b}, que descrevem a variação temporal do nível de líquido em cada tanque.
+
+\input{../common/content/tank-equations.tex}%
+
+O valor e a definição de cada constante utilizada na modelagem estão descritos na Tabela \ref{tab:tanks_params}.
+
+\input{../common/content/tank-params.tex}
+
+\subsection{Estrutura da Rede Neural Artificial}
+
+As Redes Neurais Recorrentes (\textit{Recurrent Neural Networks} — RNNs) são modelos computacionais projetados para processar dados sequenciais, sendo amplamente utilizadas em aplicações que envolvem séries temporais, reconhecimento de padrões e modelagem dinâmica de sistemas. Diferentemente das ANNs tradicionais, que tratam cada entrada de forma independente, as RNNs possuem conexões recorrentes que permitem reter informações de estados anteriores, possibilitando a captura de dependências temporais nos dados \citep{mienye_2024}.
+
+No entanto, as RNNs compartilham algumas das limitações das redes neurais tradicionais. Seu desempenho depende fortemente da disponibilidade de um grande volume de dados representativos, o que nem sempre é viável. Outro ponto crítico é que esses modelos podem gerar previsões inconsistentes com o conhecimento científico disponível, pois não consideram explicitamente as leis físicas que regem o sistema \citep{karniadakis_2021}.
+
+Para superar essas limitações surgiram as PIRNNs. Uma variação das PINNs que combina a capacidade das PINNs de incorporar conhecimento físico com a habilidade das RNNs de processar dados sequenciais e capturar dependências temporais eficientemente \citep{zheng_2023}. Elas funcionam de maneira semelhante às RNNs tradicionais, mas com a diferença de que, além do custo associado aos dados, a função de treinamento também considera o erro relativo ao problema físico. Dessa forma, a rede neural é penalizada sempre que suas previsões divergem das relações físicas conhecidas.
+
+A PIRNN utilizada neste trabalho atua como um modelo dos dois tanques apresentados na Figura \ref{fig:tank-system}. A rede recebe como entrada os dois valores anteriores de três variáveis: os estados do sistema ($h_1$, $h_2$) e a vazão de entrada $q_{\mathrm{in}}$. Sua arquitetura, ilustrada na Figura \ref{fig:pirnn-diagram}, é composta por uma camada recorrente do tipo \textit{Elman} \citep{elman_1990} seguida por duas camadas totalmente conectadas, todas utilizando a função de ativação tangente hiperbólica ($\sigma$) e com 32 neurônios cada. Por fim, uma camada linear projeta o resultado para duas saídas, correspondentes aos próximos valores dos níveis dos tanques.
+
+\begin{figure}[ht]
+  \centering
+  \resizebox{0.45\textwidth}{!}{\input{../common/figures/pirnn-diagram.tex}}
+  \caption{Diagrama da PIRNN utilizada.}
+  \label{fig:pirnn-diagram}
+\end{figure}
+
+Para treiná-la, a função custo utilizada é composta por dois termos: o primeiro, $L_{\mathrm{EDOs}}$, corresponde ao erro relacionado às equações diferenciais do problema físico, enquanto o segundo, $L_{\mathrm{data}}$, refere-se ao erro entre as previsões da rede e os dados observacionais. A função custo total $L$ está expressa em \eqref{eq:loss} em que $\omega_1$ e $\omega_2$ são coeficientes ajustáveis que determinam a importância relativa de cada termo na função custo. Neste trabalho, ambos os coeficientes foram fixados em $\omega_1 = \omega_2 = 1$, atribuindo pesos iguais ao erro da física e ao erro dos dados.
+
+\begin{equation}
+  L = \omega_1 \cdot L_{\mathrm{EDOs}} + \omega_2 \cdot L_{\mathrm{data}}
+  \label{eq:loss}
+\end{equation}
+
+O primeiro termo, $L_{\mathrm{EDOs}}$, é dado por \eqref{eq:loss-EDOs}, na qual $h_{1, \mathrm{prev}}$ e $h_{2, \mathrm{prev}}$ são os valores dos níveis dos tanques previstos pela rede neural artificial. Enquanto $f_1$ e $f_2$ são os resíduos relacionados ao sistema de equações diferenciais formado por \eqref{eq:tank_system_a} e \eqref{eq:tank_system_b}.
+
+\begin{equation}
+  \begin{split}
+    L_{\mathrm{EDOs}} = \frac{1}{N} \sum_{i = 1}^{N}
+    f_1(t^i, h_{1, \mathrm{prev}}^{i})^2 + \\
+    + \frac{1}{N} \sum_{i = 1}^{N}
+    f_2(t^i, h_{1, \mathrm{prev}}^{i}, h_{2, \mathrm{prev}}^{i})^2
+    \label{eq:loss-EDOs}
+  \end{split}
+\end{equation}
+
+O resíduo $f_1$, relacionado ao primeiro tanque, é definido em \eqref{eq:residue_tank1}. E o resíduo $f_2$, relacionado ao segundo tanque, é definido por \eqref{eq:residue_tank2}.
+
+\begin{equation}
+  \label{eq:residue_tank1}
+  f_1(t, h_1) =
+  \diff{h_1}{t} - \frac{
+    q_{\mathrm{in}} - \alpha_1 s_1 \sqrt{2gh_1}
+  }{
+    \pi (2 R h_1 - h_1^2)
+  }
+\end{equation}
+
+\begin{equation}
+  \label{eq:residue_tank2}
+  \begin{split}
+    f_2(t, h_1, h_2) & =                      \\
+                     & \diff{h_2}{t} - \frac{
+      \alpha_1 s_1 \sqrt{2gh_1} - \alpha_2 s_2 \sqrt{2gh_2}
+    }{
+      \pi (2 R h_2 - h_2^2)
+    }
+  \end{split}
+\end{equation}
+
+As derivadas temporais de ambos os resíduos são calculadas por meio do método das diferenças finitas com três pontos, considerando os dois pontos fornecidos para a rede e o ponto previsto pela rede.
+
+O segundo termo, $L_{\mathrm{data}}$, é expresso por \eqref{eq:loss-data}, em que $h_{1, \mathrm{data}}$ e $h_{2, \mathrm{data}}$ representam os dados utilizados para o treinamento, os quais foram obtidos por meio de uma simulação realizada com o método numérico de Runge-Kutta de quarta ordem (RK4), utilizando a biblioteca \textit{CasADi}. A simulação abrangeu pouco mais de 33 horas de operação do sistema, com a introdução de perturbações na vazão de entrada, a fim de capturar a dinâmica completa do processo sob diferentes condições operacionais.
+
+\begin{equation}
+  \begin{split}
+    L_{\mathrm{data}} = \frac{1}{N} \sum_{i = 1}^{N}
+    \left( h_{1, \mathrm{data}}^{i} - h_{1, \mathrm{prev}}^{i} \right)^{2} + \\
+    + \frac{1}{N} \sum_{i = 1}^{N}
+    \left( h_{2, \mathrm{data}}^{i} - h_{2, \mathrm{prev}}^{i} \right)^{2}
+    \label{eq:loss-data}
+  \end{split}
+\end{equation}
+
+O treinamento da rede foi realizado utilizando o otimizador \textit{Adam} no framework PyTorch \citep{kingma_2017, pytorch_2024} em um processo de ajuste progressivo da taxa de aprendizado. Foram realizadas até 10.500 épocas de treinamento no total, iniciando com uma taxa de aprendizado de 0,01 por 500 épocas, seguida de 5.000 épocas com taxa de 0,001 e, por fim, 5.000 épocas com taxa de 0,0001. Além disso, foi empregado um mecanismo de \textit{early stopping}, interrompendo o treinamento caso não houvesse melhora na função custo por 1.000 épocas consecutivas. Para otimizar a inferência em tempo de execução, o modelo treinado foi convertido para o formato ONNX (\textit{Open Neural Network Exchange}), e os testes de velocidade foram realizados com o framework \textit{ONNX Runtime} \citep{onnxruntime}.
+
+\subsection{Implementação no Arduino}
+
+O Arduino é uma plataforma de prototipagem amplamente utilizada por programadores devido ao seu baixo custo e facilidade para desenvolver. A plataforma conta com uma série de placas diferentes, cada uma com características específicas, para atender a diversas necessidades e aplicações. Entre as placas mais populares, destaca-se o Arduino UNO, uma das primeiras e mais acessíveis opções disponíveis e que foi a escolhida para esse trabalho \citep{hughes_2016}.
+
+No entanto, o Arduino é bastante limitado em termos de capacidade de memória e processamento. O modelo UNO possui 32 kilobytes de memória flash e apenas 2 kilobytes de memória RAM, o que dificulta bastante a tarefa de implementar algoritmos mais complexos, como ANNs que possuem muitas camadas. Diante desse cenário, foi necessário realizar um \textit{deploy} manual da rede neural artificial. As equações que descrevem a PIRNN foram programadas diretamente na linguagem C++, sem o uso de bibliotecas especializadas. Para garantir que o código fosse compatível com as restrições do hardware, foram feitas otimizações para reduzir o uso de memória e armazenamento. Dentre elas, vale a pena destacar o uso da memória flash para armazenamento dos pesos e bias da rede neural por meio da diretiva \textit{PROGMEM} \citep{margolis_2020}. Isso é possível, pois esses valores são constantes, uma vez que foram definidos na etapa de treinamento da rede.
+
+Além disso, também foi implementado um controlador PI no Arduino para realizar o controle básico do sistema, demonstrando a integração entre a PIRNN e o controle. Os valores das constantes do controlador foram definidos como $K_p = 1,5$ cm$\cdot$s$^{-1}$ e $K_i = 0,0015$ cm$\cdot$s$^{-2}$. Esses parâmetros foram ajustados empiricamente, com base na observação do comportamento dinâmico do sistema durante os testes.
+
+Para realizar a comunicação com o Arduíno, foi desenvolvido o \textit{software} TankSim (Figura \ref{fig:interface}), responsável por simular o funcionamento do sistema, enviar os dados simulados para o Arduino e receber os valores previstos pela rede neural, além de plotar os gráficos comparando os dados simulados com os previstos. A interface conta ainda com um controle deslizante que permite o usuário alterar o valor de $SP$ para o tanque $h_2$, dois interruptores para suspender o envio dos dados simulados do nível dos tanques para o Arduino e outro controle deslizante para controlar o nível de ruído. A interface foi desenvolvida utilizando o framework \texttt{Qt} (\url{https://www.qt.io/}), que oferece uma ampla gama de componentes e ferramentas para a criação de interfaces.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{tanksim.png}
+  \caption{Captura de tela do TankSim.}
+  \label{fig:interface}
+\end{figure}
+
+Este sistema configura-se como um esquema \textit{hardware-in-the-loop} (HIL) \citep{bacic_2005}, no qual o TankSim simula uma planta virtual e envia as leituras dos sensores para o Arduino. Com base nessas informações, o controlador PI implementado no Arduino calcula a ação de controle, ou seja, o novo valor da vazão $q_{\mathrm{in}}$, visando ajustar o nível do tanque $h_2$ até o \textit{setpoint} definido pelo usuário. Em seguida, o Arduino utiliza a PIRNN para prever os valores dos níveis de líquido em cada tanque para o próximo intervalo de tempo. Por fim, o TankSim aplica a ação de controle na planta simulada e exibe os resultados na interface.
+
+Quando os dados dos sensores não estão disponíveis, simulando uma falha ou interrupção manual por meio dos interruptores da interface, o Arduino entra em um modo de retroalimentação. Nesse modo, em vez de receber a entrada do nível anterior dos tanques do simulador, a PIRNN passa a utilizar os valores previstos pela própria rede neural como entrada. Esse mecanismo permite que o sistema continue operando mesmo na ausência de dados dos sensores, garantindo a continuidade da previsão e do controle.

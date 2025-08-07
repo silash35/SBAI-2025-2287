@@ -1,18 +1,18 @@
-\begin{equation}
-  \begin{cases}
-    \displaystyle \diff{h_1(t)}{t} & =
-    \displaystyle \frac{
+\begin{subequations}
+  \begin{align}
+    \diff{h_1(t)}{t} & =
+    \frac{
       q_{\mathrm{in}} - \alpha_1 s_1 \sqrt{2gh_1}
     }{
-      \pi (2 R h_1 - h_1 \, ^2)
-    } %
-    \\[10pt]
-    \displaystyle \diff{h_2(t)}{t} & = %
-    \displaystyle \frac{
+      \pi (2 R h_1 - h_1^2)
+    }
+    \label{eq:tank_system_a} \\[10pt]
+    \diff{h_2(t)}{t} & =
+    \frac{
       \alpha_1 s_1 \sqrt{2gh_1} - \alpha_2 s_2 \sqrt{2gh_2}
     }{
-      \pi (2 R h_2 - h_2 \, ^2)
+      \pi (2 R h_2 - h_2^2)
     }
-  \end{cases}
-  \label{eq:tank_system}
-\end{equation}
+    \label{eq:tank_system_b}
+  \end{align}
+\end{subequations}

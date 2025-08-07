@@ -1,30 +1,23 @@
 \documentclass[aspectratio=169]{beamer}
+
 \input{style.tex}
 
+\title[SBAI]{Embarque de Rede Neural Recorrente Fenomenologicamente Informada para Controle de Nível em Tanques Esféricos}
+\author[Silas Henrique Alves Araújo]{\textbf{Silas Henrique Alves Araújo, Wildson Oliveira dos Santos, Leonardo Silva de Souza, Raony Maia Fontes, Márcio André Fernandes Martins}}
+\institute[UFBA]{PRH 35.1, Escola Politécnica da Universidade Federal da Bahia (UFBA)}
+\date[31/07/2025]
+
 \addbibresource{../common/bibliography.bib}
+
 \graphicspath{{../common/figures/}}
-
-\definecolor{PSEblue}{RGB}{121, 164, 200}
-\usecolortheme[named=PSEblue]{structure}
-\usepackage{pdfpages}
-
-% Presentation settings
-\title[PINN embarcada em ambiente software-in-the-loop como analisador virtual]{Implementação de PINN embarcada em ambiente software-in-the-loop como analisador virtual para um sistema de tanques esféricos}
-
-\author[Silas Henrique Alves Araújo]{Silas Henrique Alves Araújo, Leonardo Silva de Souza, Raony Maia Fontes, Márcio André Fernandes Martins}
-
-\institute{Universidade Federal da Bahia}
 
 \begin{document}
 
-%\maketitle
-{
-\setbeamercolor{background canvas}{bg=}
-\includepdf[pages=1]{capa-pse.pdf}
-}
+\begin{frame}
+  \titlepage
+\end{frame}
 
 \input{content/introduction.tex}
-\input{content/pinn.tex}
 \input{content/pirnn.tex}
 \input{content/arduino.tex}
 \input{content/conclusion.tex}
@@ -32,19 +25,23 @@
 {
   \logo{
     \raisebox{-1cm}{
+      \includegraphics[height=1.2cm, keepaspectratio]{prh-logo.png}%
+    }
+    \hspace{2.3cm}
+    \raisebox{-1cm}{
       \includegraphics[height=1cm, keepaspectratio]{anp.png}%
     }
-    \hspace{4.4cm}
+    \hspace{2.3cm}
     \raisebox{-1cm}{
-      \includegraphics[height=1.4cm, keepaspectratio]{prh.png}%
+      \includegraphics[height=1.4cm, keepaspectratio]{prh-35.1.png}%
     }
-    \hspace{5.8cm}
+    \hspace{2.8cm}
     \raisebox{-1cm}{
       \includegraphics[height=1.4cm, keepaspectratio]{brasao-ufba.png}%
     }
   }
   \begin{frame}{Agradecimentos}
-    \centering \large Agradeço ao PRH 35.1 pelo suporte acadêmico e à Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP) pelo suporte financeiro e apoio ao desenvolvimento deste trabalho.
+    \centering \large Agradeço à Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP), no âmbito do PRH 35.1, pelo suporte financeiro e apoio ao desenvolvimento deste trabalho.
   \end{frame}
 }
 
