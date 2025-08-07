@@ -20,8 +20,4 @@ This project uses **UV** to automatically manage and install all the necessary d
    uv sync
    ```
 
-1. Open `src/pirnn.ipynb` in VS Code. Select the UV managed kernel from the kernel selection menu (`.venv`). You can now execute the notebook cells.
-
-## Bonus: PINN
-
-You can also explore a traditional Physics-Informed Neural Network (PINN) implementation by running the `src/pinn.ipynb` notebook.
+1. Open `src/main.ipynb` in VS Code. Select the UV managed kernel from the kernel selection menu (`.venv`). You can now execute the notebook cells.

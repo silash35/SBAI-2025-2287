@@ -4,22 +4,8 @@ import torch
 from notifypy import Notify
 
 
-def dydx(x, y):
-    return torch.autograd.grad(
-        y, x, grad_outputs=torch.ones_like(y), create_graph=True
-    )[0]
-
-
-def safe_sqrt(x):
-    return torch.sqrt(torch.clamp(x, min=0))
-
-
 def mean_square(x):
     return torch.mean(x**2)
-
-
-def mean_abs(x):
-    return torch.mean(torch.abs(x))
 
 
 def prepare_sequences(

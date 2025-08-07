@@ -4,10 +4,17 @@ import plotly.graph_objects as go
 import seaborn as sns
 from matplotlib import colors as mcolors
 
-image_folder = "../../LaTeX/common/figures/"
-image_format = ".png"
+import config as cf
 
 colors = list(mcolors.TABLEAU_COLORS.keys())
+
+
+def _save_or_show(filename: str | None = None):
+    if filename is not None:
+        plt.savefig(cf.figures_folder + filename + cf.image_format, dpi=cf.image_dpi)
+        plt.close()
+    else:
+        plt.show()
 
 
 def plot_loss(history, label=None, filename: str | None = None):
@@ -33,13 +40,21 @@ def plot_loss(history, label=None, filename: str | None = None):
     )
 
     if filename is not None:
-        fig.write_image(image_folder + filename + image_format)
+        fig.write_image(cf.figures_folder + filename + cf.image_format)
 
     fig.show()
 
 
-def plot_tanks(t, tanks, labels=None, dashed_first=0, filename=None, legend_loc=None):
-    plt.figure(figsize=(10, 4), layout="constrained")
+def plot_tanks(
+    t,
+    tanks,
+    labels=None,
+    dashed_first=0,
+    filename=None,
+    legend_loc=None,
+    figsize=(10, 4),
+):
+    plt.figure(figsize=figsize, layout="constrained")
     # plt.title("Níveis dos tanques pelo tempo")
 
     for i, tank in enumerate(tanks):
@@ -54,10 +69,9 @@ def plot_tanks(t, tanks, labels=None, dashed_first=0, filename=None, legend_loc=
     plt.xlabel("Tempo / h")
     plt.ylabel("Nível / cm")
     plt.legend(loc=legend_loc)
+    plt.grid()
 
-    if filename is not None:
-        plt.savefig(image_folder + filename + image_format)
-    plt.show()
+    _save_or_show(filename)
 
 
 def plot_flow_and_level(t, flow, levels, levels_label=None, filename=None):
@@ -66,6 +80,7 @@ def plot_flow_and_level(t, flow, levels, levels_label=None, filename=None):
     axs[0].plot(t / (60 * 60), flow)
     axs[0].set_ylabel("Vazão / (cm$^3\\cdot$s$^{-1}$)")
     axs[0].set_xlabel("Tempo / h")
+    axs[0].grid()
 
     # axs[1].set_title("Nível dos tanques pelo tempo")
     for i, level in enumerate(levels):
@@ -74,15 +89,14 @@ def plot_flow_and_level(t, flow, levels, levels_label=None, filename=None):
     axs[1].set_ylabel("Nível / cm")
     axs[1].set_xlabel("Tempo / h")
     axs[1].legend()
+    axs[1].grid()
 
-    if filename is not None:
-        plt.savefig(image_folder + filename + image_format)
-    plt.show()
+    _save_or_show(filename)
 
 
 def plot_density(values, labels, filename: str | None = None, width=20, extra=None):
-    plt.rcParams.update({"font.size": 14})
-    fig, axs = plt.subplots(3, figsize=(width, 8), layout="constrained", dpi=300)
+    plt.rcParams.update({"font.size": 15})
+    fig, axs = plt.subplots(3, figsize=(width, 8), layout="constrained")
     t_max = max([max(v) for v in values])
     for i in range(len(values)):
         mean_value = np.mean(values[i])
@@ -105,31 +119,32 @@ def plot_density(values, labels, filename: str | None = None, width=20, extra=No
         axs[ax].legend()
         axs[ax].set_ylabel(None)
         axs[ax].set_xlim(0, t_max)
+        if ax != 2:
+            axs[ax].set_xticklabels([])
+        axs[ax].grid(True)
     if extra is not None:
         extra(plt)
 
     fig.supxlabel("Tempo / s")
     fig.supylabel("Densidade de Probabilidade")
-    if filename is not None:
-        plt.savefig(image_folder + filename + image_format)
-        plt.close(fig)
-    else:
-        plt.show()
+
+    _save_or_show(filename)
+
+    plt.rcParams.update({"font.size": 12})
 
 
 def plot_boxplot(data, filename: str | None = None):
     plt.rcParams.update({"font.size": 28})
-    plt.figure(figsize=(16, 9), layout="constrained", dpi=300)
+    plt.figure(figsize=(16, 9), layout="constrained")
 
     sns.boxplot(
         x="Tempos", y="Métodos", hue="Métodos", legend=False, palette="tab10", data=data
     )
 
-    plt.xlabel("ln(Tempo / s)")
+    plt.xlabel("Tempo / s")
     plt.ylabel("")
+    plt.grid()
 
-    if filename is not None:
-        plt.savefig(image_folder + filename + image_format)
-        plt.close()
-    else:
-        plt.show()
+    _save_or_show(filename)
+
+    plt.rcParams.update({"font.size": 12})

@@ -1,7 +1,6 @@
 [project]
-name = "neural-networks"
+name = "PIRNN-spherical-tanks"
 version = "0.1.0"
-authors = [ {name = "Silas Henrique", email = "silash35@gmail.com"}, ]
 requires-python = ">=3.12, <3.13"
 dependencies = [
     "casadi>=3.6.6",
@@ -9,7 +8,6 @@ dependencies = [
     "drawarrow>=0.0.3",
     "hickle>=5.0.3",
     "ipykernel>=6.29.5",
-    "ipynb>=0.5.1",
     "kaleido>=0.2.1",
     "matplotlib>=3.9.2",
     "nbformat>=5.10.4",

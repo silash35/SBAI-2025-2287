@@ -54,49 +54,6 @@ class BaseModel(nn.Module):
         return ((x + 1) / 2) * (x_max - x_min) + x_min
 
 
-class FNN(BaseModel):
-    def __init__(
-        self,
-        input_size: int,
-        hidden_size: int,
-        output_size: int,
-        dataInfo: DataInfo | None = None,
-    ):
-        super(FNN, self).__init__()
-        self.hidden_layer = nn.Sequential(
-            nn.Linear(input_size, hidden_size),
-            nn.Tanh(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.Tanh(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.Tanh(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.Tanh(),
-            nn.Linear(hidden_size, output_size),
-        )
-
-        if dataInfo is not None:
-            self.in_min = dataInfo["in_min"]
-            self.in_max = dataInfo["in_max"]
-            self.out_min = dataInfo["out_min"]
-            self.out_max = dataInfo["out_max"]
-        else:
-            self.in_min = -torch.ones(input_size)
-            self.in_max = torch.ones(input_size)
-            self.out_min = -torch.ones(output_size)
-            self.out_max = torch.ones(output_size)
-
-    def forward(self, x, disable_norm: bool = False):
-        if disable_norm:
-            return self.hidden_layer(x)
-
-        return self.denormalize(
-            self.hidden_layer(self.normalize(x, self.in_min, self.in_max)),
-            self.out_min,
-            self.out_max,
-        )
-
-
 class RNN(BaseModel):
     def __init__(
         self,
