@@ -1,8 +1,12 @@
-# PSE NE 2024 – 1º Seminário em Engenharia de Sistemas em Processos no Nordeste
+# SBAI 2025 Article 2287
 
-This repository contains all materials related to the work I presented at the **1º Seminário em Engenharia de Sistemas em Processos do Nordeste (PSE NE 2024)**, an academic and technical event focused on advancements in Process System Engineering. The event was held in 2024 in the city of Campina Grande, in the state of Paraíba, Brazil.
+This repository contains all materials associated with the paper _“Embarque de Rede Neural Recorrente Fenomenologicamente Informada para Controle de Nível em Tanques Esféricos”_ (Embedding of a Physics-Informed Recurrent Neural Network for Level Control in Spherical Tanks), accepted for publication at the **XVII Simpósio Brasileiro de Automação Inteligente (SBAI 2025)**.
 
-Please note that some parts of the code, such as comments and image generation functions, are written in Portuguese, as the visual outputs and documentation were tailored for a Portuguese-speaking audience.
+The paper presents the implementation of a Physics-Informed Recurrent Neural Network (PIRNN) on a low-cost microcontroller, where the PIRNN serves as a virtual analyzer in a cascade spherical tank system. A Proportional-Integral (PI) controller is also deployed on the microcontroller to regulate the tank levels in real time.
+
+This repository includes the full system implementation: the PIRNN training pipeline, the Arduino firmware, and the TankSim simulation environment. All necessary files and instructions are provided to fully replicate the Hardware-in-the-Loop (HIL) setup described in the article.
+
+The work was presented at SBAI 2025, held in São João del-Rei, Minas Gerais, Brazil. Please note that some parts of the code, such as comments and image generation functions, are written in Portuguese, as the visual outputs and documentation were tailored for a Portuguese-speaking audience.
 
 ## 📁 Folder Structure
 
@@ -10,7 +14,7 @@ This project organizes its components into distinct folders, with each containin
 
 ### 📂 `Arduino/`
 
-This folder contains the code that runs on the Arduino UNO microcontroller. It handles serial communication with TankSim and implements the PIRNN in C++.
+This folder contains the code that runs on the Arduino UNO microcontroller. It handles serial communication with TankSim, implements the PIRNN in C++, and includes a PI controller.
 
 ### 📂 `LaTeX/`
 
@@ -18,12 +22,14 @@ This folder contains the code that runs on the Arduino UNO microcontroller. It h
 
 This folder contains the LaTeX source files for the presentation slides and the technical article.
 
-The article was made, but it was **not published**, as the seminar focused solely on oral presentations without formal proceedings.
-
 ### 📂 `PyTorch/`
 
 This folder contains the code used to create and train the PIRNN using the PyTorch library.
 
 ### 📂 `TankSim/`
 
-This folder contains the code for the TankSim software, developed in Python using the Qt framework. It simulates the tank system and communicates with the Arduino via serial connection.
+This folder contains the code for the TankSim software, developed in Python using the Qt framework. It simulates the tank system, enables setpoint adjustments, and communicates with the Arduino via serial connection.
+
+## Citation
+
+> **Accepted for publication – awaiting proceedings** 
