@@ -6,7 +6,7 @@ ColumnLayout {
     id: menu
 
     property double speed: 0
-    property double q_value: 21.5
+    property double sp_value: 10.3644
     property double noise_intensity: 0.5
     property double alfa1: 0.56
     property double alfa2: 0.3
@@ -22,19 +22,19 @@ ColumnLayout {
 
     ColumnLayout {
         Text {
-            text: "Flow Rate (q): " + slider_q.value.toFixed(1)
+            text: "Setpoint (SP): " + slider_sp.value.toFixed(1)
         }
 
         Slider {
-            id: slider_q
+            id: slider_sp
 
-            from: 21.5
-            to: 34
+            from: 10.3644
+            to: 25.74
             stepSize: 0.5
-            value: menu.q_value
+            value: menu.sp_value
             Layout.fillWidth: true
             onValueChanged: {
-                menu.q_value = value;
+                menu.sp_value = value;
             }
         }
 
@@ -87,8 +87,8 @@ ColumnLayout {
             id: speedComboBox
 
             Layout.fillWidth: true
-            model: ["Slow Motion (0.5x)", "Real Time (1x)", "Double Speed (2x)", "Max Speed"]
-            currentIndex: 3
+            model: ["Slow Motion (0.5x)", "Real Time (1x)", "Double Speed (2x)", "10x Speed", "Max Speed"]
+            currentIndex: 4
             onCurrentIndexChanged: {
                 switch (currentIndex) {
                 case 0:
@@ -101,6 +101,9 @@ ColumnLayout {
                     menu.speed = 2;
                     break;
                 case 3:
+                    menu.speed = 10;
+                    break;
+                case 4:
                     menu.speed = 0;
                     break;
                 default:

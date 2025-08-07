@@ -16,6 +16,11 @@ ChartView {
         adjustAxes(t);
     }
 
+    function push_sp(t, sp) {
+        series_sp.append(t, sp);
+        adjustAxes(t);
+    }
+
     function adjustAxes(t) {
         if (t + (t / 20) > axisX.max)
             axisX.max = t + (t / 20);
@@ -28,7 +33,7 @@ ChartView {
     ValueAxis {
         id: axisX
 
-        titleText: "Time/s"
+        titleText: "Time / s"
         min: 0
         max: 10
     }
@@ -36,7 +41,7 @@ ChartView {
     ValueAxis {
         id: axisY
 
-        titleText: "Level/cm"
+        titleText: "Level / cm"
         min: 0
         max: 30
     }
@@ -75,6 +80,14 @@ ChartView {
         id: series_h2_serial
 
         name: "h2 (Serial)"
+        axisX: axisX
+        axisY: axisY
+    }
+
+    LineSeries {
+        id: series_sp
+
+        name: "h2 (SP)"
         axisX: axisX
         axisY: axisY
     }

@@ -21,13 +21,17 @@ if os.path.exists(data_filename):
 def push(data: Data):
     with open(data_filename, mode="a", newline="", encoding="utf-8") as csv_file:
         fieldnames = [
-            "q",
-            "h1_sensor",
-            "h1_serial",
-            "h2_sensor",
-            "h2_serial",
+            # User inputs
+            "sp",
             "h1_switch",
             "h2_switch",
+            # Simulated sensors
+            "h1_sensor",
+            "h2_sensor",
+            # Serial output
+            "q",
+            "h1_serial",
+            "h2_serial",
         ]
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 

@@ -38,7 +38,7 @@ class DaemonThread:
 
         # Get data from interface
         self.speed = float(self.menu_component.property("speed"))
-        q = float(self.menu_component.property("q_value"))
+        sp = float(self.menu_component.property("sp_value"))
         noise_intensity = float(self.menu_component.property("noise_intensity"))
         h1_switch = self.switch_h1.property("checked")
         h2_switch = self.switch_h2.property("checked")
@@ -48,32 +48,37 @@ class DaemonThread:
         alfa_2 = float(self.menu_component.property("alfa2"))
         simulator.update_alfas(alfa_1, alfa_2)
 
-        # Get data from simulator and Arduino
-        h_sim = simulator.get_next_point(q, self.h_sim[0], self.h_sim[1])
-        h_sensor = add_noise(h_sim, noise_intensity)
-
-        serial_input = f"{self.h_sensor[0] if h1_switch else "" },{self.h_sensor[1] if h2_switch else ""},{q}"
+        # Get h1(t), h2(t) and q(t) from Arduino
+        serial_input = f"{self.h_sensor[0] if h1_switch else "" },{self.h_sensor[1] if h2_switch else ""},{sp}\n"
         ser.write(serial_input.encode())
         serial_output = ser.readline().strip().decode()
-
         print("Serial output:", serial_output)
 
         if len(serial_output) > 3:
             output_split = serial_output.strip().split(",")
             h1_serial = float(output_split[0])
             h2_serial = float(output_split[1])
+            q = float(output_split[2])
+
+            # Get h1(t) and h2(t) from simulator
+            h_sim = simulator.get_next_point(q, self.h_sim[0], self.h_sim[1])
+            h_sensor = add_noise(h_sim, noise_intensity)
+
+            # Push complete state at t time
             data: Data = {
-                "q": q,
-                "h1_sensor": h_sensor[0],
-                "h1_serial": h1_serial,
-                "h2_sensor": h_sensor[1],
-                "h2_serial": h2_serial,
+                "sp": sp,
                 "h1_switch": h1_switch,
                 "h2_switch": h2_switch,
+                "h1_sensor": h_sensor[0],
+                "h2_sensor": h_sensor[1],
+                "q": q,
+                "h1_serial": h1_serial,
+                "h2_serial": h2_serial,
             }
             push(data)
             levelChartController.push_serial(self.t, h1_serial, h2_serial)
             levelChartController.push_sensor(self.t, h_sensor[0], h_sensor[1])
+            levelChartController.push_sp(self.t, sp)
             flowChartController.push_q(self.t, q)
             self.h_sim = h_sim
             self.h_sensor = h_sensor

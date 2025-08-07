@@ -18,5 +18,11 @@ class LevelChartController(ChartController):
         if chart:
             chart.push_sensor(t, h1_sim, h2_sim)
 
+    @Slot(float, float)
+    def push_sp(self, t, sp):
+        chart = self.getChartObject()
+        if chart:
+            chart.push_sp(t, sp)
+
 
 levelChartController = LevelChartController()

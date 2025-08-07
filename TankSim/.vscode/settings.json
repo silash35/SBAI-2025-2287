@@ -8,19 +8,27 @@
   },
   "cSpell.words": [
     "antialiasing",
+    "arrowprops",
+    "arrowstyle",
     "astype",
     "axvline",
     "casadi",
+    "dashdot",
     "figsize",
     "fontsize",
     "gridspec",
     "pinn",
     "pirnn",
+    "pyserial",
+    "Setpoint",
     "tanksim",
     "toarray",
     "vertcat",
     "xlabel",
-    "ylabel",
-    "pyproject"
-  ]
+    "xytext",
+    "ylabel"
+  ],
+  "files.exclude": {
+    "**/__pycache__": true,
+  },
 }

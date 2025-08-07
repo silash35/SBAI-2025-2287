@@ -21,7 +21,7 @@ ChartView {
     ValueAxis {
         id: axisX
 
-        titleText: "Time/s"
+        titleText: "Time / s"
         min: 0
         max: 10
     }
@@ -29,7 +29,7 @@ ChartView {
     ValueAxis {
         id: axisY
 
-        titleText: "Flow rate/(cm²s⁻¹)"
+        titleText: "Flow rate / (cm²s⁻¹)"
         min: 20
         max: 35
     }

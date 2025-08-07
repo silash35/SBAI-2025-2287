@@ -1,6 +1,6 @@
 # TankSim
 
-This directory contains the code for the TankSim software, developed in Python using the [Qt framework](https://www.qt.io/). TankSim simulates a tank system, allows flow Rate adjustments, and communicates with the Arduino via serial connection.
+This directory contains the code for the TankSim software, developed in Python using the [Qt framework](https://www.qt.io/). TankSim simulates a tank system, allows setpoint adjustments, and communicates with the Arduino via serial connection.
 
 The code was tested on Linux. It may work if you are using Windows, but it has not been tested.
 
