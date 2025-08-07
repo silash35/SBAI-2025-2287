@@ -1,0 +1,59 @@
+\section{Introdução}
+
+\begin{frame}
+  \begin{block}{Objetivos}
+    \begin{itemize}
+      \item Explorar o uso de Redes Neurais Baseadas em Física (PINNs) como uma alternativa aos métodos tradicionais de simulação de sistemas dinâmicos;
+      \item embarcar uma PINN em um microcontrolador de baixo custo.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Relevância}
+    \begin{itemize}
+      \item Velocidade é essencial em aplicações que exigem alta velocidade e respostas em tempo real, como no Controle Preditivo Baseado em Modelo (MPC).
+      \item Hardware de baixo custo torna a tecnologia viável para mais aplicações, inclusive em contextos industriais e acadêmicos.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Problema Exemplo}
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{tank-system.png}
+        \caption{Representação esquemática do sistema de dois tanques esféricos.}
+        \label{fig:tank-system}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.6\textwidth}
+      \begin{block}{Sistema de equações diferenciais dos tanques \parencite{wildson_2024}}
+        \input{../common/content/tank-equations.tex}
+        \vspace{0cm}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \input{../common/content/tank-params.tex}
+\end{frame}
+
+\begin{frame}{Mas, o que são PINNs?}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      Introduzidas por \citeauthor{raissi_2017_I} em \citedate{raissi_2017_I}, as PINNs são uma forma de integrar princípios físicos ao treinamento de redes neurais. Elas têm o potencial de:
+      \begin{itemize}
+        \item Acelerar simulações em relação aos métodos numéricos tradicionais;
+        \item melhorar a qualidade das previsões em comparação com redes neurais convencionais.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \centering
+        \resizebox{\textwidth}{!}{\input{../common/figures/neural-network.tex}}
+        \caption{Representação de uma Rede Neural Artificial (ANN).}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}

@@ -1,0 +1,23 @@
+{
+  "ltex.language": "pt-BR",
+  "ltex.additionalRules.motherTongue": "pt-BR",
+  "ltex.completionEnabled": true,
+  "editor.minimap.enabled": false,
+  "ltex.bibtex.fields": {
+    "title": false,
+    "issn": false,
+    "journal": false,
+    "booktitle": false
+  },
+  "material-icon-theme.folders.associations": {
+    "tanks-slide": "television",
+    "psa-slide": "television",
+    "tanks-article": "docs",
+    "psa-article": "docs",
+    "bibliography": "pdf"
+  },
+  "files.exclude": {
+    "psa-*": true,
+    "**/*.log": true
+  }
+}

@@ -1,0 +1,76 @@
+\documentclass[a4paper]{ifacconf}
+
+\usepackage{graphicx,amsmath,url} 
+\usepackage[round]{natbib}        
+\usepackage[brazil,english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ae}
+\usepackage{esdiff}
+
+\graphicspath{{../common/figures/}}
+\raggedbottom
+
+\newtheorem{teorema}[thm]{{\em Teorema}}{ }
+\newtheorem{lema}[thm]{{\em Lema}}{ }
+\newtheorem{corolario}[thm]{{\em Corolário}}{ }
+\newenvironment{prova}{{\bf Prova.}}{ }
+
+\begin{document}
+
+\selectlanguage{brazil}
+
+\begin{frontmatter}
+  \title{Embarque de Rede Neural Recorrente Fenomenologicamente Informada como Analisador Virtual para Sistemas Dinâmicos}
+
+  \author[poliufba]{Silas Henrique Alves Araújo}
+  \author[poliufba]{Leonardo Silva de Souza}
+  \author[poliufba]{Raony Maia Fontes}
+  \author[poliufba]{Márcio André Fernandes Martins}
+
+  \address[poliufba]{Escola Politécnica, Universidade Federal da Bahia, BA, (e-mail: silasaraujo@ufba.br, lssouza@ufba.br, raony@ufba.br, marciomartins@ufba.br)}
+
+
+  \selectlanguage{english}
+  \renewcommand{\abstractname}{{\bf Abstract:~}}
+  \begin{abstract}
+    The use of Physics-Informed Recurrent Neural Networks (PIRNNs) offers a promising framework for modeling dynamic systems. They combine traditional machine learning with the system's phenomenological model by incorporating differential equations directly into the cost function.
+    This work presents the deployment of a PIRNN on a low-cost microcontroller to operate as a virtual analyzer, tested in a software-in-the-loop environment for a system of cascading spherical tanks.
+    The results demonstrate reductions of over three times in computation time and the ability to provide information in the absence of measurements. These findings suggest that PIRNNs can be an efficient solution for systems requiring real-time control and process analysis applications.
+
+    \vskip 1mm
+    \selectlanguage{brazil}
+    {\noindent \bf Resumo}:  O uso de Redes Neurais Recorrentes Fenomenologicamente Informadas (PIRNNs) tem se mostrado promissor na modelagem de sistemas dinâmicos. Elas combinam o aprendizado de máquina tradicional com o modelo fenomenológico do sistema incorporando equações diferenciais diretamente na função de custo.
+    Este trabalho apresenta o embarque de uma PIRNN em um microcontrolador de baixo custo para operar como analisador virtual, testado em ambiente \textit{software-in-the-loop} para um sistema de tanques esféricos em cascata.
+    Os resultados demonstram reduções superiores a três vezes no tempo de cômputo e a capacidade de fornecer informações na ausência de medições. Esses achados sugerem que a PIRNN pode ser uma solução eficiente para sistemas que exigem controle em tempo real e aplicações de análise de processos.
+  \end{abstract}
+
+  \selectlanguage{english}
+
+  \begin{keyword}
+    Physics-Informed Recurrent Neural Networks; Simulation of Nonlinear Systems; Low-Cost Microcontrollers; Virtual Analyzer; Software-in-the-loop.
+
+    \vskip 1mm%
+    \selectlanguage{brazil}
+    {\noindent\it Palavras-chave:} Redes Neurais Recorrentes Fenomenologicamente Informadas; Simulação de Sistemas Não Lineares; Microcontroladores de Baixo Custo; Analisador Virtual; Software-in-the-loop.
+  \end{keyword}
+
+  \selectlanguage{brazil}
+\end{frontmatter}
+
+%===============================================================================
+%===============================================================================
+%===============================================================================
+
+\input{content/about-author}
+\input{content/introduction}
+\input{content/methodology}
+\input{content/results}
+\input{content/conclusion}
+
+\section*{Agradecimentos}
+Os autores gostariam de agradecer o suporte financeiro da ANP no âmbito do PRH 35.1.
+
+\bibliography{../common/bibliography.bib}
+
+\end{document}

@@ -1,0 +1,7 @@
+\section{Considerações finais}
+
+Neste trabalho, foi demonstrada a utilização de uma PIRNN embarcada em um Arduino UNO para simular um sistema dinâmico formado por dois tanques esféricos em cascata. Os resultados mostraram que a PIRNN é uma alternativa viável aos métodos numéricos tradicionais e apresenta desempenho superior em relação ao tempo de simulação, sem grandes prejuízos a fidelidade das previsões. Isso a torna adequada para o controle em tempo real, sendo aplicável em automação industrial, monitoramento de processos e como analisador virtual. Sua compatibilidade com plataformas de baixo custo, como o Arduino, torna-a acessível e robusta, mantendo boa desempenho mesmo com falhas ou ruídos nas medições.
+
+Contudo, em sistemas dinâmicos reais, é necessário considerar a degradação dos parâmetros do modelo ao longo do tempo, causada pelo desgaste ou envelhecimento dos componentes físicos. Essa degradação pode comprometer o desempenho da PIRNN, tornando necessário o retreinamento periódico do modelo para garantir sua acurácia. Nesse contexto, estudos futuros podem explorar técnicas de aprendizado por reforço, visando a adaptação em tempo real da PIRNN às mudanças dos parâmetros do sistema sem a necessidade de intervenções manuais.
+
+Por fim, pesquisas adicionais podem investigar a implementação de modelos mais complexos, visando expandir a aplicabilidade das PIRNNs em sistemas dinâmicos descritos por equações diferenciais parciais.
