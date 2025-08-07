@@ -1,12 +1,13 @@
 #pragma once
-#include "nn.hpp"
+#include "lib/NN.hpp"
+#include "lib/utils.hpp"
 
 #define INPUT_SIZE 3
 #define HIDDEN_SIZE 32
 #define OUTPUT_SIZE 2
 #define STEPS 2
 
-/* Normalization data */
+/* Data for normalization */
 const float in_min[3] = {2.9700, 2.9700, 21.5000};
 const float in_max[3] = {26.7300, 26.7300, 34.0000};
 const float out_min[2] = {2.9700, 2.9700};
@@ -395,7 +396,7 @@ const float layer3_bias[HIDDEN_SIZE] PROGMEM = {-0.021941, -0.188636, 0.120041, 
   -0.146836, 0.161770, -0.201736, 0.026076, 0.083910, 0.186696, -0.120878, 0.041019, 0.109956,
   0.208721, 0.035021, 0.061818, 0.013184, 0.030322, 0.152994, 0.174703, 0.080396, 0.190620};
 
-// Output Layer: HIDDEN_SIZE -> OUTPUT_SIZE
+// Output layer: HIDDEN_SIZE -> OUTPUT_SIZE
 const float output_weights[OUTPUT_SIZE * HIDDEN_SIZE] PROGMEM = {-0.000971, 0.110989, 0.055213,
   -0.154422, -0.134767, -0.244651, 0.101111, -0.147601, -0.031348, 0.024476, -0.017596, 0.066217,
   0.032768, -0.014467, 0.187226, -0.051335, 0.153990, -0.009437, -0.127157, -0.160048, 0.048533,

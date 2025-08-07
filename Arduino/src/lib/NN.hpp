@@ -1,4 +1,5 @@
 #pragma once
+#include "utils.hpp"
 #include <avr/pgmspace.h>
 #include <math.h>
 
@@ -63,11 +64,3 @@ void Denormalize(float in[], const int size, const float out_min[], const float 
 }
 
 } // namespace NN
-
-// Utils
-
-void copyArray(const float source[], float destination[], int size) {
-  for (int i = 0; i < size; i++) {
-    destination[i] = source[i];
-  }
-}
