@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from scipy.integrate import solve_ivp
 
-g = 980.665  # gravidade (cm/s^2)
+g = 980.665  # gravity (cm/s^2)
 
 
 class Base_tanks:
@@ -76,19 +76,21 @@ class Base_tanks:
         return np.array([h1_values, h2_values])
 
     def simulate_casadi(self, method: str):
-        # Definir as variáveis
+        # Define state variables
         h1 = ca.MX.sym("h1")  # type: ignore
         h2 = ca.MX.sym("h2")  # type: ignore
         h = ca.vertcat(h1, h2)
 
-        # Definir parâmetros
+        # Define input parameter
         q = ca.MX.sym("q_1")  # type: ignore
 
+        # Get the system dynamics (symbolic ODE)
         f = self.edo_casadi(self.t_torch, h, q)
 
+        # Set up the ODE system structure
         ode = {"x": h, "p": q, "ode": f}
 
-        # Resolver o sistema
+        # Solve the system
         h1_values = np.zeros_like(self.t_numpy)
         h2_values = np.zeros_like(self.t_numpy)
 
@@ -100,14 +102,14 @@ class Base_tanks:
             h2_values[i] = h_current[1]
 
             if h1_values[i] > self.h_max:
-                raise Exception("Tanque 1 cheio")
+                raise Exception("Tank 1 overflow")
             elif h1_values[i] < self.h_min:
-                raise Exception("Tanque 1 vazio")
+                raise Exception("Tank 1 empty")
 
             if h2_values[i] > self.h_max:
-                raise Exception("Tanque 2 cheio")
+                raise Exception("Tank 2 overflow")
             elif h2_values[i] < self.h_min:
-                raise Exception("Tanque 2 vazio")
+                raise Exception("Tank 2 empty")
 
             h_current = integrator(x0=h_current, p=self.q(self.t_numpy[i], np))["xf"]
 
@@ -115,19 +117,27 @@ class Base_tanks:
 
 
 class Spherical_tanks(Base_tanks):
-    def __init__(self, alfa_1=0.56, alfa_2=0.30, D=29.7, d=0.8):
+    def __init__(
+        self,
+        alfa_1: float = 0.56,
+        alfa_2: float = 0.30,
+        D: float = 29.7,
+        d: float = 0.8,
+    ):
         """
-        Parâmetros:
-        alfa_1 : Coeficiente de vazão da válvula do primeiro tanque.
-        alfa_2 : Coeficiente de vazão da válvula do segundo tanque.
-        D: Diâmetro interno do reservatório em centímetros.
-        d : Diâmetro interno do tubo em centímetros.
+        Models a system of two spherical tanks with interconnected fluid flow.
+
+        Parameters:
+        alfa_1: Discharge coefficient for the first tank's valve.
+        alfa_2: Discharge coefficient for the second tank's valve.
+        D: Internal diameter of the spherical reservoir in centimeters.
+        d: Internal diameter of the connecting pipe in centimeters.
         """
         self.alfa_1 = alfa_1
         self.alfa_2 = alfa_2
 
-        R = D / 2  # Raio interno do reservatório (cm)
-        s = torch.pi * (d / 2) ** 2  # Área da seção interna da tubulação (cm²)
+        R = D / 2  # Internal radius of the reservoir (cm)
+        s = torch.pi * (d / 2) ** 2  # Internal cross-sectional area of the pipe (cm²)
         self.s_1 = s
         self.s_2 = s
         self.R = R
@@ -139,7 +149,7 @@ class Spherical_tanks(Base_tanks):
         # Dependent variables
         h1, h2 = Y[0], Y[1]
 
-        # Equations
+        # Mass balance equations for spherical tanks
         dh1dt = (q - self.alfa_1 * self.s_1 * (2 * g * h1) ** (0.5)) / (
             pi * (2 * self.R * h1 - h1**2)
         )

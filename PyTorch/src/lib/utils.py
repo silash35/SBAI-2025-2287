@@ -13,20 +13,20 @@ def prepare_sequences(
 ):
     step = 1 if overlap else history_size
 
-    # Crie as entradas (X_true) a partir das sequências usando unfold
+    # Create input sequences (X_true) using unfold to generate sliding windows
     input_sequences = [
         seq.unfold(0, history_size, step)[:-1] for seq in input_sequences
     ]
 
-    # Empilhe e permute as dimensões para obter o tensor final de entradas
+    # Stack and permute dimensions to get final input tensor
     X_true = torch.stack(input_sequences).permute(1, 2, 0)
 
-    # Crie os alvos (Y_true) pegando o último valor de cada sequência
+    # Create target sequences (Y_true) by taking the last value of each target sequence window
     target_seqs = [
         seq.unfold(0, history_size, step)[1:, -1] for seq in target_sequences
     ]
 
-    # Empilhe e permute as dimensões para obter o tensor final de alvos
+    # Stack and permute dimensions to get final target tensor
     Y_true = torch.stack(target_seqs).permute(1, 0)
 
     return X_true, Y_true
@@ -35,8 +35,8 @@ def prepare_sequences(
 def notify_training_end():
     notification = Notify()
     notification.application_name = "PyTorch"
-    notification.title = "Sua rede neural finalizou o treinamento!"
-    notification.message = "Confira já os resultados."
+    notification.title = "Your neural network has finished training!"
+    notification.message = "Check the results now."
     notification.send(block=False)
 
 

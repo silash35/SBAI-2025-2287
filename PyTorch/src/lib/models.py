@@ -40,7 +40,7 @@ class BaseModel(nn.Module):
             # Notify epoch
             if epoch % 100 == 0:
                 print(f"Epoch {epoch} loss: {loss}")
-        print("Loss Final:", torch.sum(torch.tensor(history[-1])).item())
+        print("Final Loss:", torch.sum(torch.tensor(history[-1])).item())
         return history
 
     def normalize(
@@ -101,6 +101,6 @@ class RNN(BaseModel):
         if disable_norm is False:
             output = self.denormalize(output, self.out_min, self.out_max)
 
-        # Para facilitar, selecionamos apenas o valor de saída da ultima camada
-        # Similar ao return_sequences=False do Keras
-        return output[:, -1, :]  # Saida no formato de (batch_size, output_size)
+        # For convenience, we select only the output value from the last layer
+        # Similar to return_sequences=False in Keras
+        return output[:, -1, :]  # Output in format (batch_size, output_size)
