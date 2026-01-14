@@ -8,6 +8,12 @@ This repository includes the full system implementation: the PIRNN training pipe
 
 The work was presented at SBAI 2025, held in São João del-Rei, Minas Gerais, Brazil. Please note that some parts of the code, such as comments and image generation functions, are written in Portuguese, as the visual outputs and documentation were tailored for a Portuguese-speaking audience.
 
+## Citation
+
+This repository provides a **CITATION.cff** file, which enables GitHub to automatically generate citation information for this work. The corresponding BibTeX entry can be obtained directly through the GitHub interface by clicking the **“Cite this repository”** button on the repository page.
+
+The citation metadata follows the **Citation File Format (CFF)** specification. More information about CFF is available at: https://citation-file-format.github.io/
+
 ## 📁 Folder Structure
 
 This project organizes its components into distinct folders, with each containing a markdown file that provides detailed guidance when necessary.
