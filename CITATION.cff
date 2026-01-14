@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+title: TankSim
+message: Please cite the following works when using this software.
+type: software
+authors:
+  - given-names: Silas
+    email: silash35@gmail.com
+    family-names: Araújo
+    orcid: 'https://orcid.org/0009-0004-8001-461X'
+repository-code: 'https://github.com/silash35/SBAI-2025-2287'
+keywords:
+  - Physics-Informed Recurrent Neural Networks
+  - Simulation of Nonlinear Systems
+  - Low-Cost Microcontrollers
+  - Virtual Analyzer
+  - Hardware-in-the-loop
+license: Unlicense
+preferred-citation:
+  authors:
+    - family-names: Araújo
+      given-names: Silas
+    - family-names: Santos
+      given-names: Wildson
+    - family-names: Souza
+      given-names: Leonardo S.
+    - family-names: Fontes
+      given-names: Raony M.
+    - family-names: Martins
+      given-names: Márcio A. F.
+  title: >-
+    Embarque de Rede Neural Recorrente Fenomenologicamente Informada para
+    Controle de Nível em Tanques Esféricos
+  conference:
+    name: XVII Simpósio Brasileiro de Automação Inteligente
+  year: 2025
+  languages:
+    - pt
+  publisher:
+    name: Sociedade Brasileira de Automática
+    country: BR
+    city: São João del-Rei, MG
+  type: conference-paper
